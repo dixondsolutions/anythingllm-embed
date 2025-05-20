@@ -49,7 +49,7 @@ export default function ChatHistory({ settings = {}, history = [] }) {
     return (
       <div className="allm-h-full allm-overflow-y-auto allm-px-6 allm-py-6 allm-flex allm-flex-col allm-justify-start allm-no-scroll">
         <div className="allm-flex allm-h-full allm-flex-col allm-items-center allm-justify-center">
-          <p className="allm-text-gray-700 allm-text-base allm-font-sans allm-py-6 allm-px-8 allm-text-center allm-bg-[#FBE7C6] allm-rounded-2xl allm-mb-8 allm-leading-relaxed allm-max-w-[85%]">
+          <p className="allm-text-gray-600 allm-text-base allm-font-sans allm-py-4 allm-text-center allm-px-8 allm-bg-[#FBE7C6] allm-rounded-xl allm-mb-8">
             {settings?.greeting ?? "Send a chat to get started."}
           </p>
           <SuggestedMessages settings={settings} />
@@ -124,7 +124,7 @@ function SuggestedMessages({ settings }) {
   if (!settings?.defaultMessages?.length) return null;
 
   return (
-    <div className="allm-flex allm-flex-col allm-gap-y-3 allm-w-full allm-max-w-[85%]">
+    <div className="allm-flex allm-flex-col allm-gap-y-3 allm-w-full">
       {settings.defaultMessages.map((content, i) => (
         <button
           key={i}
@@ -137,7 +137,7 @@ function SuggestedMessages({ settings }) {
               new CustomEvent(SEND_TEXT_EVENT, { detail: { command: content } })
             );
           }}
-          className="allm-text-white allm-py-4 allm-px-6 allm-rounded-2xl allm-text-left hover:allm-opacity-90 allm-transition-opacity allm-border-none allm-cursor-pointer allm-shadow-sm allm-text-base"
+          className="allm-text-white allm-py-3 allm-px-6 allm-rounded-xl allm-text-left hover:allm-opacity-90 allm-transition-opacity allm-border-none allm-cursor-pointer allm-shadow-sm"
         >
           {content}
         </button>
