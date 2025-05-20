@@ -3,7 +3,6 @@ import useSessionId from "@/hooks/useSessionId";
 import useOpenChat from "@/hooks/useOpen";
 import Head from "@/components/Head";
 import OpenButton from "@/components/OpenButton";
-import ChatWindow from "./ChatWindow";
 import { useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import i18next from "@/i18n";
@@ -49,11 +48,9 @@ export default function App() {
           id="anything-llm-chat"
         >
           {isChatOpen && (
-            <ChatWindow
-              closeChat={() => toggleOpenChat(false)}
-              settings={embedSettings}
-              sessionId={sessionId}
-            />
+            <div>
+              {/* Chat window content will be implemented here */}
+            </div>
           )}
         </div>
       </div>
