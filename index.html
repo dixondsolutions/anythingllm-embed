@@ -1,17 +1,26 @@
 <!doctype html>
-
+<html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<html lang="en">
-
-  <body>
-    <h1>This is an example testing page for embedded AnythingLLM.</h1>
-    <!--
-      <script data-embed-id="example-uuid" data-base-api-url='http://localhost:3001/api/embed' data-open-on-load="on"
-      src="/dist/anythingllm-chat-widget.js"> USE THIS SRC FOR DEVELOPMENT SO CHANGES APPEAR!
-      </script>
-    -->
-  </body>
-
+<body>
+  <script
+    data-embed-id="example-uuid"
+    data-base-api-url="http://localhost:3001/api/embed"
+    data-chat-icon="chatBubble"
+    data-button-color="#E27B3F"
+    data-user-bg-color="#E27B3F" 
+    data-assistant-bg-color="#FBE7C6"
+    data-brand-image-url="https://i.ibb.co/G3jG8ph/kimba-logo.png"
+    data-greeting="Hi! Let me help you plan the perfect trip! Just let me know what you're interested in. I can help find new and interesting places for you to explore, or just a place to rest your head. I cannot directly book trips or assist with reservation information. I may sometimes get things wrong, so always double check availabilities!"
+    data-assistant-name="KIMBA"
+    data-window-height="600px"
+    data-window-width="400px"
+    data-text-size="14"
+    data-send-message-text="Type your message..."
+    data-reset-chat-text="Reset Chat"
+    data-default-messages="Where should I stay?,What activities are available?,Tell me about local restaurants"
+    src="/dist/anythingllm-chat-widget.js">
+  </script>
+</body>
 </html>
