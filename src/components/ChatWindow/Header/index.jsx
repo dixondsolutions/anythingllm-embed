@@ -6,18 +6,18 @@ export default function ChatWindowHeader({
   closeChat,
 }) {
   return (
-    <div className="allm-flex allm-items-center allm-justify-between allm-px-6 allm-py-4 allm-bg-[#2C2C2C] allm-rounded-t-3xl">
-      <div className="allm-flex allm-items-center allm-gap-3">
+    <div className="allm-flex allm-items-center allm-justify-between allm-px-6 allm-py-4 allm-bg-[#2C2C2C] allm-rounded-t-[32px]">
+      <div className="allm-flex allm-items-center allm-gap-4">
         <img
           src={iconUrl}
           alt="Brand Logo"
-          className="allm-w-12 allm-h-12 allm-rounded-full"
+          className="allm-w-12 allm-h-12 allm-rounded-full allm-object-cover"
         />
         <div className="allm-flex allm-flex-col">
-          <h1 className="allm-text-xl allm-font-bold allm-text-white">
+          <h1 className="allm-text-2xl allm-font-bold allm-text-white allm-tracking-wide">
             {settings.assistantName || "KIMBA"}
           </h1>
-          <p className="allm-text-sm allm-text-white/80">
+          <p className="allm-text-base allm-text-white/80 allm-font-serif">
             Your Faithful Travel Companion
           </p>
         </div>

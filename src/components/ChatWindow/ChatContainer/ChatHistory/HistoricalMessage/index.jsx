@@ -20,7 +20,7 @@ const HistoricalMessage = forwardRef(
   ) => {
     const textSize = !!embedderSettings.settings.textSize
       ? `allm-text-[${embedderSettings.settings.textSize}px]`
-      : "allm-text-sm";
+      : "allm-text-base";
 
     return (
       <div className="allm-py-2">
@@ -38,12 +38,12 @@ const HistoricalMessage = forwardRef(
                   ? embedderSettings.USER_STYLES.msgBg
                   : embedderSettings.ASSISTANT_STYLES.msgBg,
             }}
-            className={`allm-py-3 allm-px-4 allm-max-w-[80%] ${
+            className={`allm-py-4 allm-px-6 allm-max-w-[85%] ${
               error
-                ? "allm-bg-red-200 allm-rounded-xl"
+                ? "allm-bg-red-200 allm-rounded-2xl"
                 : role === "user"
-                ? "allm-rounded-xl allm-text-white"
-                : "allm-rounded-xl"
+                ? "allm-rounded-2xl allm-text-white"
+                : "allm-rounded-2xl allm-text-gray-700"
             } allm-shadow-sm`}
           >
             <div className="allm-flex allm-flex-col">
@@ -59,7 +59,7 @@ const HistoricalMessage = forwardRef(
                 </div>
               ) : (
                 <span
-                  className={`allm-whitespace-pre-line ${textSize}`}
+                  className={`allm-whitespace-pre-line ${textSize} allm-leading-relaxed`}
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(renderMarkdown(message)),
                   }}

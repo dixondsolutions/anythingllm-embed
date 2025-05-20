@@ -49,13 +49,13 @@ export default function PromptInput({
   };
 
   return (
-    <div className="allm-w-full allm-sticky allm-bottom-0 allm-z-10 allm-flex allm-justify-center allm-items-center allm-bg-transparent">
+    <div className="allm-w-full allm-sticky allm-bottom-0 allm-z-10 allm-flex allm-justify-center allm-items-center allm-bg-transparent allm-px-6 allm-pb-6">
       <form
         onSubmit={handleSubmit}
-        className="allm-flex allm-flex-col allm-gap-y-1 allm-rounded-t-lg allm-w-full allm-items-center allm-justify-center"
+        className="allm-flex allm-flex-col allm-gap-y-1 allm-w-full allm-items-center allm-justify-center"
       >
-        <div className="allm-flex allm-items-center allm-w-full allm-px-4 allm-pb-4">
-          <div className="allm-bg-white allm-flex allm-flex-col allm-overflow-hidden allm-w-full allm-rounded-lg">
+        <div className="allm-flex allm-items-center allm-w-full allm-gap-x-3">
+          <div className="allm-flex-1 allm-bg-gray-100 allm-rounded-2xl allm-px-4 allm-py-3">
             <textarea
               ref={textareaRef}
               onKeyUp={adjustTextArea}
@@ -69,7 +69,7 @@ export default function PromptInput({
                 adjustTextArea(e);
               }}
               value={message}
-              className="allm-font-sans allm-border-none allm-cursor-text allm-max-h-[100px] allm-text-[14px] allm-mx-2 allm-py-2 allm-w-full allm-text-black allm-bg-transparent placeholder:allm-text-slate-800/60 allm-resize-none active:allm-outline-none focus:allm-outline-none allm-flex-grow"
+              className="allm-font-sans allm-border-none allm-cursor-text allm-max-h-[100px] allm-text-base allm-w-full allm-text-gray-700 allm-bg-transparent placeholder:allm-text-gray-500 allm-resize-none active:allm-outline-none focus:allm-outline-none"
               placeholder={settings.sendMessageText || t("chat.send-message")}
               id="message-input"
             />
@@ -79,12 +79,12 @@ export default function PromptInput({
             type="submit"
             disabled={buttonDisabled}
             style={{ backgroundColor: settings.buttonColor || '#E27B3F' }}
-            className="allm-ml-2 allm-px-8 allm-py-2 allm-rounded-lg allm-text-white hover:allm-opacity-90 allm-transition-opacity"
+            className="allm-px-8 allm-py-3 allm-rounded-2xl allm-text-white hover:allm-opacity-90 allm-transition-opacity allm-font-semibold"
             id="send-message-button"
             aria-label="Send message"
           >
             {buttonDisabled ? (
-              <CircleNotch className="allm-w-4 allm-h-4 allm-animate-spin" />
+              <CircleNotch className="allm-w-5 allm-h-5 allm-animate-spin" />
             ) : (
               "SEND"
             )}
