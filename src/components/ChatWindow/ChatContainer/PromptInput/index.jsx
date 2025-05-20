@@ -34,7 +34,7 @@ export default function PromptInput({
   };
 
   const captureEnter = (event) => {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       if (!event.shiftKey) {
         submit(event);
       }
@@ -45,46 +45,54 @@ export default function PromptInput({
     const element = event.target;
     element.style.height = "auto";
     element.style.height =
-      event.target.value.length !== 0 ? element.scrollHeight + "px" : "auto";
+      event.target.value.length !== 0 ? `${element.scrollHeight}px` : "auto";
   };
 
   return (
-    <div className="allm-w-full allm-sticky allm-bottom-0 allm-z-10 allm-flex allm-justify-center allm-items-center allm-bg-transparent">
+    <div className="allm-w-full allm-sticky allm-bottom-0 allm-z-10 allm-flex allm-flex-col allm-justify-center allm-items-center allm-bg-transparent">      
       <form
         onSubmit={handleSubmit}
-        className="allm-flex allm-flex-col allm-gap-y-1 allm-rounded-t-lg allm-w-full allm-items-center allm-justify-center"
+        className="allm-flex allm-flex-col allm-w-full allm-items-center allm-justify-center"
       >
-        <div className="allm-flex allm-items-center allm-w-full allm-px-4 allm-pb-4">
-          <div className="allm-bg-white allm-flex allm-flex-col allm-overflow-hidden allm-w-full allm-rounded-lg">
-            <textarea
-              ref={textareaRef}
-              onKeyUp={adjustTextArea}
-              onKeyDown={captureEnter}
-              onChange={onChange}
-              required={true}
-              disabled={inputDisabled}
-              onFocus={() => setFocused(true)}
-              onBlur={(e) => {
-                setFocused(false);
-                adjustTextArea(e);
-              }}
-              value={message}
-              className="allm-font-sans allm-border-none allm-cursor-text allm-max-h-[100px] allm-text-[14px] allm-mx-2 allm-py-2 allm-w-full allm-text-black allm-bg-transparent placeholder:allm-text-slate-800/60 allm-resize-none active:allm-outline-none focus:allm-outline-none allm-flex-grow"
-              placeholder={settings.sendMessageText || t("chat.send-message")}
-              id="message-input"
-            />
-          </div>
+        <div className="allm-bg-white allm-flex allm-flex-col allm-overflow-hidden allm-w-full allm-border-t allm-border-gray-100">
+          <textarea
+            ref={textareaRef}
+            onKeyUp={adjustTextArea}
+            onKeyDown={captureEnter}
+            onChange={onChange}
+            required={true}
+            disabled={inputDisabled}
+            onFocus={() => setFocused(true)}
+            onBlur={(e) => {
+              setFocused(false);
+              adjustTextArea(e);
+            }}
+            value={message}
+            className="allm-font-sans allm-border-none allm-cursor-text allm-max-h-[60px] allm-text-[15px] allm-mx-8 allm-my-4 allm-w-auto allm-text-gray-600 allm-bg-transparent placeholder:allm-text-gray-400 allm-resize-none active:allm-outline-none focus:allm-outline-none"
+            placeholder="Type your message..."
+            id="message-input"
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'"
+            }}
+          />
+        </div>
+        <div className="allm-w-full allm-px-3 allm-pb-3">
           <button
             ref={formRef}
             type="submit"
             disabled={buttonDisabled}
-            style={{ backgroundColor: settings.buttonColor || '#E27B3F' }}
-            className="allm-ml-2 allm-px-8 allm-py-2 allm-rounded-lg allm-text-white hover:allm-opacity-90 allm-transition-opacity"
+            style={{ 
+              backgroundColor: "#E27B3F",
+              boxShadow: "0 4px 12px rgba(226, 123, 63, 0.35), 0 1px 3px rgba(226, 123, 63, 0.2)",
+              borderRadius: "0 0 0 0",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'"
+            }}
+            className="allm-w-full allm-px-8 allm-py-3 allm-text-white hover:allm-opacity-95 allm-transition-all allm-font-semibold allm-text-lg"
             id="send-message-button"
             aria-label="Send message"
           >
             {buttonDisabled ? (
-              <CircleNotch className="allm-w-4 allm-h-4 allm-animate-spin" />
+              <CircleNotch className="allm-w-5 allm-h-5 allm-animate-spin allm-mx-auto" />
             ) : (
               "SEND"
             )}

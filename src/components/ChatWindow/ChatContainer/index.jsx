@@ -131,7 +131,7 @@ export default function ChatContainer({
 
   return (
     <div className="allm-h-full allm-w-full allm-flex allm-flex-col">
-      <div className="allm-flex-1 allm-min-h-0 allm-mb-8">
+      <div className="allm-flex-1 allm-min-h-0 allm-mb-10">
         <ChatHistory settings={settings} history={chatHistory} />
       </div>
       <div className="allm-flex-shrink-0 allm-mt-auto">

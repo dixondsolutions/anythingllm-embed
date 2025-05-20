@@ -2,9 +2,7 @@ import ChatWindowHeader from "./Header";
 import SessionId from "../SessionId";
 import useChatHistory from "@/hooks/chat/useChatHistory";
 import ChatContainer from "./ChatContainer";
-import Sponsor from "../Sponsor";
 import { ChatHistoryLoading } from "./ChatContainer/ChatHistory";
-import ResetChat from "../ResetChat";
 
 export default function ChatWindow({ closeChat, settings, sessionId }) {
   const { chatHistory, setChatHistory, loading } = useChatHistory(
@@ -14,18 +12,18 @@ export default function ChatWindow({ closeChat, settings, sessionId }) {
 
   if (loading) {
     return (
-      <div className="allm-flex allm-flex-col allm-h-full">
-        <ChatWindowHeader
-          sessionId={sessionId}
-          settings={settings}
-          iconUrl={settings.brandImageUrl}
-          closeChat={closeChat}
-          setChatHistory={setChatHistory}
-        />
-        <ChatHistoryLoading />
-        <div className="allm-pt-4 allm-pb-2 allm-h-fit allm-gap-y-1">
-          <SessionId />
-          <Sponsor settings={settings} />
+      <div className="allm-flex allm-flex-col allm-h-full allm-relative">
+        <div className="allm-absolute allm-top-0 allm-left-0 allm-right-0 allm-z-30">
+          <ChatWindowHeader
+            sessionId={sessionId}
+            settings={settings}
+            iconUrl={settings.brandImageUrl}
+            closeChat={closeChat}
+            setChatHistory={setChatHistory}
+          />
+        </div>
+        <div className="allm-flex-grow allm-bg-white allm-pt-16">
+          <ChatHistoryLoading />
         </div>
       </div>
     );
@@ -34,30 +32,28 @@ export default function ChatWindow({ closeChat, settings, sessionId }) {
   setEventDelegatorForCodeSnippets();
 
   return (
-    <div className="allm-flex allm-flex-col allm-h-full allm-bg-white allm-rounded-3xl allm-shadow-xl">
+    <div 
+      className="allm-flex allm-flex-col allm-h-full allm-bg-white allm-rounded-t-[28px] allm-overflow-hidden allm-relative"
+      style={{
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'"
+      }}
+    >
       {!settings.noHeader && (
-        <ChatWindowHeader
-          sessionId={sessionId}
-          settings={settings}
-          iconUrl={settings.brandImageUrl}
-          closeChat={closeChat}
-          setChatHistory={setChatHistory}
-        />
+        <div className="allm-absolute allm-top-0 allm-left-0 allm-right-0 allm-z-30">
+          <ChatWindowHeader
+            sessionId={sessionId}
+            settings={settings}
+            iconUrl={settings.brandImageUrl}
+            closeChat={closeChat}
+            setChatHistory={setChatHistory}
+          />
+        </div>
       )}
-      <div className="allm-flex-grow allm-overflow-y-auto">
+      <div className="allm-flex-grow allm-overflow-y-auto allm-bg-white allm-pt-14">
         <ChatContainer
           sessionId={sessionId}
           settings={settings}
           knownHistory={chatHistory}
-        />
-      </div>
-      <div className="allm-mt-4 allm-pb-4 allm-h-fit allm-gap-y-2 allm-z-10">
-        <Sponsor settings={settings} />
-        <ResetChat
-          setChatHistory={setChatHistory}
-          settings={settings}
-          sessionId={sessionId}
-          closeChat={closeChat}
         />
       </div>
     </div>
@@ -88,8 +84,8 @@ function copyCodeSnippet(uuid) {
   }, 2500);
 }
 
-function setEventDelegatorForCodeSnippets() {
-  document?.addEventListener("click", function (e) {
+const setEventDelegatorForCodeSnippets = () => {
+  document?.addEventListener("click", (e) => {
     const target = e.target.closest("[data-code-snippet]");
     const uuidCode = target?.dataset?.code;
     if (!uuidCode) return false;

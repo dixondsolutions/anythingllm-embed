@@ -5,6 +5,21 @@ import DOMPurify from "@/utils/chat/purify";
 import { embedderSettings } from "@/main";
 import { formatDate } from "@/utils/date";
 
+// Helper function to safely render content without using dangerouslySetInnerHTML
+const SafeContent = ({ content }) => {
+  // Use an empty div as a container
+  const contentRef = React.useRef(null);
+  
+  // Set innerHTML only after the component mounts
+  React.useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.innerHTML = DOMPurify.sanitize(renderMarkdown(content));
+    }
+  }, [content]);
+  
+  return <div ref={contentRef} className="allm-whitespace-pre-line allm-leading-relaxed" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'" }} />;
+};
+
 const HistoricalMessage = forwardRef(
   (
     {
@@ -18,33 +33,38 @@ const HistoricalMessage = forwardRef(
     },
     ref
   ) => {
-    const textSize = !!embedderSettings.settings.textSize
+    const textSize = embedderSettings.settings.textSize
       ? `allm-text-[${embedderSettings.settings.textSize}px]`
-      : "allm-text-sm";
+      : "allm-text-base";
 
+    const isUser = role === "user";
+    
     return (
       <div className="allm-py-2">
         <div
           key={uuid}
           ref={ref}
           className={`allm-flex allm-items-start allm-w-full allm-h-fit ${
-            role === "user" ? "allm-justify-end" : "allm-justify-start"
+            isUser ? "allm-justify-end" : "allm-justify-start"
           }`}
         >
           <div
             style={{
-              backgroundColor:
-                role === "user"
-                  ? embedderSettings.USER_STYLES.msgBg
-                  : embedderSettings.ASSISTANT_STYLES.msgBg,
+              backgroundColor: isUser 
+                ? "#E27B3F" 
+                : "#FBE7C6",
+              boxShadow: isUser
+                ? "0 4px 12px rgba(226, 123, 63, 0.3), 0 1px 3px rgba(226, 123, 63, 0.1)"
+                : "0 4px 12px rgba(251, 231, 198, 0.5), 0 1px 3px rgba(251, 231, 198, 0.2)",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'"
             }}
-            className={`allm-py-3 allm-px-4 allm-max-w-[80%] ${
+            className={`allm-py-3.5 allm-px-5 allm-max-w-[85%] ${
               error
                 ? "allm-bg-red-200 allm-rounded-xl"
-                : role === "user"
+                : isUser
                 ? "allm-rounded-xl allm-text-white"
-                : "allm-rounded-xl"
-            } allm-shadow-sm`}
+                : "allm-rounded-xl allm-text-gray-800"
+            }`}
           >
             <div className="allm-flex allm-flex-col">
               {error ? (
@@ -58,12 +78,9 @@ const HistoricalMessage = forwardRef(
                   </p>
                 </div>
               ) : (
-                <span
-                  className={`allm-whitespace-pre-line ${textSize}`}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(renderMarkdown(message)),
-                  }}
-                />
+                <span className={`${textSize}`}>
+                  <SafeContent content={message} />
+                </span>
               )}
             </div>
           </div>

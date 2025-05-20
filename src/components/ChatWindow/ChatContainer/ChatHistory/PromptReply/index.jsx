@@ -1,9 +1,25 @@
-import { forwardRef, memo, useState } from "react";
+import { forwardRef, memo, useState, useEffect, useRef } from "react";
 import { Warning, CircleNotch, CaretDown } from "@phosphor-icons/react";
 import renderMarkdown from "@/utils/chat/markdown";
 import { embedderSettings } from "@/main";
 import AnythingLLMIcon from "@/assets/anything-llm-icon.svg";
 import { formatDate } from "@/utils/date";
+import DOMPurify from "@/utils/chat/purify";
+
+// Helper function to safely render content without using dangerouslySetInnerHTML
+const SafeContent = ({ content }) => {
+  // Use an empty div as a container
+  const contentRef = useRef(null);
+  
+  // Set innerHTML only after the component mounts
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.innerHTML = DOMPurify.sanitize(renderMarkdown(content || ""));
+    }
+  }, [content]);
+  
+  return <div ref={contentRef} className="allm-whitespace-pre-line allm-leading-relaxed allm-font-normal allm-text-base allm-flex allm-flex-col allm-gap-y-2" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'" }} />;
+};
 
 const ThinkingIndicator = ({ hasThought }) => {
   if (hasThought) {
@@ -14,7 +30,7 @@ const ThinkingIndicator = ({ hasThought }) => {
       </div>
     );
   }
-  return <div className="allm-mx-4 allm-my-1 allm-dot-falling"></div>;
+  return <div className="allm-mx-4 allm-my-1 allm-dot-falling" />;
 };
 
 const ThoughtBubble = ({ thought }) => {
@@ -25,9 +41,10 @@ const ThoughtBubble = ({ thought }) => {
 
   return (
     <div className="allm-mb-2">
-      <div
+      <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="allm-cursor-pointer allm-flex allm-items-center allm-gap-x-1.5 allm-text-gray-400 hover:allm-text-gray-500"
+        type="button"
+        className="allm-cursor-pointer allm-flex allm-items-center allm-gap-x-1.5 allm-text-gray-400 hover:allm-text-gray-500 allm-bg-transparent allm-border-none allm-p-0"
       >
         <CaretDown
           size={14}
@@ -35,7 +52,7 @@ const ThoughtBubble = ({ thought }) => {
           className={`allm-transition-transform ${isExpanded ? "allm-rotate-180" : ""}`}
         />
         <span className="allm-text-xs allm-font-medium">View thoughts</span>
-      </div>
+      </button>
       {isExpanded && (
         <div className="allm-mt-2 allm-mb-3 allm-pl-0 allm-border-l-2 allm-border-gray-200">
           <div className="allm-text-xs allm-text-gray-600 allm-font-mono allm-whitespace-pre-wrap">
@@ -82,23 +99,15 @@ const PromptReply = forwardRef(
 
     if (isThinking) {
       return (
-        <div className="allm-py-[5px]">
-          <div className="allm-text-[10px] allm-text-gray-400 allm-ml-[54px] allm-mr-6 allm-mb-2 allm-text-left allm-font-sans">
-            {embedderSettings.settings.assistantName ||
-              "Anything LLM Chat Assistant"}
-          </div>
+        <div className="allm-py-2">
           <div className="allm-flex allm-items-start allm-w-full allm-h-fit allm-justify-start">
-            <img
-              src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-              alt="Anything LLM Icon"
-              className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-ml-2"
-            />
             <div
               style={{
-                wordBreak: "break-word",
-                backgroundColor: embedderSettings.ASSISTANT_STYLES.msgBg,
+                backgroundColor: "#FBE7C6",
+                boxShadow: "0 4px 12px rgba(251, 231, 198, 0.5), 0 1px 3px rgba(251, 231, 198, 0.2)",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'"
               }}
-              className={`allm-py-[11px] allm-px-4 allm-flex allm-flex-col ${embedderSettings.ASSISTANT_STYLES.base} allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)]`}
+              className="allm-py-3.5 allm-px-5 allm-rounded-xl allm-text-gray-800 allm-max-w-[85%]"
             >
               {hasIncompleteThinkTag && streamingThought && (
                 <ThoughtBubble thought={streamingThought} />
@@ -112,24 +121,17 @@ const PromptReply = forwardRef(
 
     if (error) {
       return (
-        <div className="allm-py-[5px]">
-          <div className="allm-text-[10px] allm-text-gray-400 allm-ml-[54px] allm-mr-6 allm-mb-2 allm-text-left allm-font-sans">
-            {embedderSettings.settings.assistantName ||
-              "Anything LLM Chat Assistant"}
-          </div>
+        <div className="allm-py-2">
           <div className="allm-flex allm-items-start allm-w-full allm-h-fit allm-justify-start">
-            <img
-              src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-              alt="Anything LLM Icon"
-              className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-ml-2"
-            />
-            <div className="allm-py-[11px] allm-px-4 allm-rounded-lg allm-flex allm-flex-col allm-bg-red-200 allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)] allm-mr-[37px] allm-ml-[9px]">
-              <div className="allm-flex allm-gap-x-5">
-                <span className="allm-inline-block allm-p-2 allm-rounded-lg allm-bg-red-50 allm-text-red-500">
-                  <Warning className="allm-h-4 allm-w-4 allm-mb-1 allm-inline-block" />{" "}
-                  Could not respond to message.
-                  <span className="allm-text-xs">Server error</span>
+            <div className="allm-py-3.5 allm-px-5 allm-rounded-xl allm-max-w-[85%] allm-bg-red-100 allm-text-red-600 allm-shadow-md" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'" }}>
+              <div className="allm-flex allm-flex-col allm-gap-y-2">
+                <span className="allm-flex allm-items-center allm-gap-x-2">
+                  <Warning className="allm-h-4 allm-w-4" />
+                  <span className="allm-font-medium">Could not respond to message</span>
                 </span>
+                <p className="allm-text-sm allm-bg-red-50 allm-p-2 allm-rounded-md">
+                  Server error
+                </p>
               </div>
             </div>
           </div>
@@ -138,49 +140,33 @@ const PromptReply = forwardRef(
     }
 
     return (
-      <div className="allm-py-[5px]">
-        <div className="allm-text-[10px] allm-text-gray-400 allm-ml-[54px] allm-mr-6 allm-mb-2 allm-text-left allm-font-sans">
-          {embedderSettings.settings.assistantName ||
-            "Anything LLM Chat Assistant"}
-        </div>
+      <div className="allm-py-2">
         <div
           key={uuid}
           ref={ref}
           className="allm-flex allm-items-start allm-w-full allm-h-fit allm-justify-start"
         >
-          <img
-            src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-            alt="Anything LLM Icon"
-            className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-ml-2"
-          />
           <div
             style={{
-              wordBreak: "break-word",
-              backgroundColor: embedderSettings.ASSISTANT_STYLES.msgBg,
+              backgroundColor: "#FBE7C6",
+              boxShadow: "0 4px 12px rgba(251, 231, 198, 0.5), 0 1px 3px rgba(251, 231, 198, 0.2)",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'"
             }}
-            className={`allm-py-[11px] allm-px-4 allm-flex allm-flex-col ${embedderSettings.ASSISTANT_STYLES.base} allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)]`}
+            className="allm-py-3.5 allm-px-5 allm-rounded-xl allm-text-gray-800 allm-max-w-[85%]"
           >
             {thoughts.length > 0 && (
               <ThoughtBubble thought={thoughts.join("\n\n")} />
             )}
-            <div className="allm-flex allm-gap-x-5">
-              <span
-                className="allm-font-sans allm-reply allm-whitespace-pre-line allm-font-normal allm-text-sm allm-md:text-sm allm-flex allm-flex-col allm-gap-y-1"
-                dangerouslySetInnerHTML={{
-                  __html: renderMarkdown(responseContent || ""),
-                }}
-              />
+            <div>
+              <SafeContent content={responseContent} />
             </div>
           </div>
         </div>
-        {sentAt && (
-          <div className="allm-text-[10px] allm-text-gray-400 allm-ml-[54px] allm-mr-6 allm-mt-2 allm-text-left allm-font-sans">
-            {formatDate(sentAt)}
-          </div>
-        )}
       </div>
     );
   }
 );
 
 export default memo(PromptReply);
+
+

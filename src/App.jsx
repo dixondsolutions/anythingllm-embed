@@ -17,7 +17,7 @@ export default function App() {
     if (embedSettings.openOnLoad === "on") {
       toggleOpenChat(true);
     }
-  }, [embedSettings.loaded]);
+  }, [embedSettings.openOnLoad, toggleOpenChat]);
 
   if (!embedSettings.loaded) return null;
 
@@ -44,8 +44,10 @@ export default function App() {
             maxWidth: windowWidth,
             maxHeight: windowHeight,
             height: "100%",
+            boxShadow: "0 16px 50px rgba(0, 0, 0, 0.25), 0 8px 20px rgba(0, 0, 0, 0.15)",
+            borderRadius: "28px"
           }}
-          className={`allm-h-full allm-w-full allm-bg-white allm-fixed allm-bottom-0 allm-right-0 allm-mb-4 allm-md:mr-4 allm-rounded-2xl allm-border allm-border-gray-300 allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)] allm-flex allm-flex-col ${positionClasses[position]}`}
+          className={`allm-h-full allm-w-full allm-bg-white allm-fixed allm-bottom-0 allm-right-0 allm-mb-4 allm-md:mr-4 allm-overflow-hidden allm-flex allm-flex-col ${positionClasses[position]}`}
           id="anything-llm-chat"
         >
           {isChatOpen && (
