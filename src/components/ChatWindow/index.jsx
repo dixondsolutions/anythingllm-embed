@@ -3,7 +3,7 @@ import useSessionId from "@/hooks/useSessionId";
 import useOpenChat from "@/hooks/useOpen";
 import Head from "@/components/Head";
 import OpenButton from "@/components/OpenButton";
-import ChatWindow from "./components/ChatWindow";
+import ChatWindow from "./ChatWindow";
 import { useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import i18next from "@/i18n";
