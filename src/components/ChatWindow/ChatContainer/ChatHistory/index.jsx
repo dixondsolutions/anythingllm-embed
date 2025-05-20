@@ -21,7 +21,6 @@ export default function ChatHistory({ settings = {}, history = [] }) {
       chatHistoryRef.current.scrollHeight -
       chatHistoryRef.current.scrollTop -
       chatHistoryRef.current.clientHeight;
-    // Fuzzy margin for what qualifies as "bottom". Stronger than straight comparison since that may change over time.
     const isBottom = diff <= 40;
     setIsAtBottom(isBottom);
   };
@@ -48,9 +47,9 @@ export default function ChatHistory({ settings = {}, history = [] }) {
 
   if (history.length === 0) {
     return (
-      <div className="allm-h-full allm-overflow-y-auto allm-px-2 allm-py-4 allm-flex allm-flex-col allm-justify-start allm-no-scroll">
+      <div className="allm-h-full allm-overflow-y-auto allm-px-6 allm-py-6 allm-flex allm-flex-col allm-justify-start allm-no-scroll">
         <div className="allm-flex allm-h-full allm-flex-col allm-items-center allm-justify-center">
-          <p className="allm-text-slate-400 allm-text-sm allm-font-sans allm-py-4 allm-text-center">
+          <p className="allm-text-gray-600 allm-text-base allm-font-sans allm-py-4 allm-text-center allm-px-8 allm-bg-[#FBE7C6] allm-rounded-xl allm-mb-8">
             {settings?.greeting ?? "Send a chat to get started."}
           </p>
           <SuggestedMessages settings={settings} />
@@ -61,7 +60,7 @@ export default function ChatHistory({ settings = {}, history = [] }) {
 
   return (
     <div
-      className="allm-h-full allm-overflow-y-auto allm-px-2 allm-pt-4 allm-pb-8 allm-flex allm-flex-col allm-justify-start allm-no-scroll"
+      className="allm-h-full allm-overflow-y-auto allm-px-6 allm-py-6 allm-flex allm-flex-col allm-justify-start allm-no-scroll"
       id="chat-history"
       ref={chatHistoryRef}
     >
@@ -121,34 +120,16 @@ export default function ChatHistory({ settings = {}, history = [] }) {
   );
 }
 
-export function ChatHistoryLoading() {
-  return (
-    <div className="allm-h-full allm-w-full allm-relative">
-      <div className="allm-h-full allm-max-h-[82vh] allm-pb-[100px] allm-pt-[5px] allm-bg-gray-100 allm-rounded-lg allm-px-2 allm-h-full allm-mt-2 allm-gap-y-2 allm-overflow-y-scroll allm-flex allm-flex-col allm-justify-start allm-no-scroll">
-        <div className="allm-flex allm-h-full allm-flex-col allm-items-center allm-justify-center">
-          <CircleNotch
-            size={14}
-            className="allm-text-slate-400 allm-animate-spin"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function SuggestedMessages({ settings }) {
   if (!settings?.defaultMessages?.length) return null;
 
   return (
-    <div className="allm-flex allm-flex-col allm-gap-y-2 allm-w-[75%]">
+    <div className="allm-flex allm-flex-col allm-gap-y-3 allm-w-full">
       {settings.defaultMessages.map((content, i) => (
         <button
           key={i}
           style={{
-            opacity: 0,
-            wordBreak: "break-word",
             backgroundColor: embedderSettings.USER_STYLES.msgBg,
-            fontSize: settings.textSize,
           }}
           type="button"
           onClick={() => {
@@ -156,11 +137,21 @@ function SuggestedMessages({ settings }) {
               new CustomEvent(SEND_TEXT_EVENT, { detail: { command: content } })
             );
           }}
-          className={`msg-suggestion allm-border-none hover:allm-shadow-[0_4px_14px_rgba(0,0,0,0.5)] allm-cursor-pointer allm-px-2 allm-py-2 allm-rounded-lg allm-text-white allm-w-full allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)]`}
+          className="allm-text-white allm-py-3 allm-px-6 allm-rounded-xl allm-text-left hover:allm-opacity-90 allm-transition-opacity allm-border-none allm-cursor-pointer allm-shadow-sm"
         >
           {content}
         </button>
       ))}
+    </div>
+  );
+}
+
+export function ChatHistoryLoading() {
+  return (
+    <div className="allm-h-full allm-w-full allm-relative">
+      <div className="allm-h-full allm-flex allm-items-center allm-justify-center">
+        <CircleNotch size={24} className="allm-text-gray-400 allm-animate-spin" />
+      </div>
     </div>
   );
 }

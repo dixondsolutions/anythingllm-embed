@@ -34,7 +34,7 @@ export default function ChatWindow({ closeChat, settings, sessionId }) {
   setEventDelegatorForCodeSnippets();
 
   return (
-    <div className="allm-flex allm-flex-col allm-h-full">
+    <div className="allm-flex allm-flex-col allm-h-full allm-bg-white allm-rounded-3xl allm-shadow-xl">
       {!settings.noHeader && (
         <ChatWindowHeader
           sessionId={sessionId}
@@ -64,9 +64,6 @@ export default function ChatWindow({ closeChat, settings, sessionId }) {
   );
 }
 
-// Enables us to safely markdown and sanitize all responses without risk of injection
-// but still be able to attach a handler to copy code snippets on all elements
-// that are code snippets.
 function copyCodeSnippet(uuid) {
   const target = document.querySelector(`[data-code="${uuid}"]`);
   if (!target) return false;
@@ -91,7 +88,6 @@ function copyCodeSnippet(uuid) {
   }, 2500);
 }
 
-// Listens and hunts for all data-code-snippet clicks.
 function setEventDelegatorForCodeSnippets() {
   document?.addEventListener("click", function (e) {
     const target = e.target.closest("[data-code-snippet]");
