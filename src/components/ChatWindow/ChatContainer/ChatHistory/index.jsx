@@ -53,15 +53,24 @@ export default function ChatHistory({ settings = {}, history = [] }) {
 
   if (history.length === 0) {
     return (
-      <div className="allm-h-full allm-overflow-y-auto allm-px-6 allm-py-5 allm-flex allm-flex-col allm-justify-start allm-overflow-hidden">
-        <div className="allm-flex allm-h-full allm-flex-col allm-items-center allm-justify-start allm-gap-y-6 allm-pt-4 allm-pb-10">
+      <div 
+        className="allm-h-full allm-overflow-visible allm-px-6 allm-flex allm-flex-col allm-justify-start"
+        style={{
+          ...getBackgroundStyle(),
+          paddingTop: "5rem"
+        }}
+      >
+        <div className="allm-flex allm-h-full allm-flex-col allm-items-center allm-justify-start allm-gap-y-6 allm-pt-2 allm-pb-32">
           <div 
             className="allm-bg-[#FBE7C6] allm-rounded-2xl allm-w-full allm-shadow-md allm-transform allm-transition-all" 
             style={{
-              boxShadow: "0 4px 12px rgba(251, 231, 198, 0.5), 0 1px 3px rgba(251, 231, 198, 0.3)"
+              boxShadow: "0 6px 16px rgba(251, 231, 198, 0.25), 0 2px 5px rgba(251, 231, 198, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.5)"
             }}
           >
-            <p className="allm-text-gray-800 allm-text-[16px] allm-leading-relaxed allm-font-normal allm-py-5 allm-px-6">
+            <p className="allm-text-gray-800 allm-text-[16px] allm-leading-relaxed allm-font-normal allm-py-5 allm-px-6" style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'",
+              color: "#33302E"
+            }}>
               Hi! Let me help you plan the perfect trip! Just let me know what you're interested in. I can help find new and interesting places for you to explore, or just a place to rest your head. I cannot directly book trips or assist with reservation information. I may sometimes get things wrong, so always double check availabilities!
             </p>
           </div>
@@ -73,11 +82,15 @@ export default function ChatHistory({ settings = {}, history = [] }) {
 
   return (
     <div
-      className="allm-h-full allm-overflow-y-auto allm-px-6 allm-py-5 allm-flex allm-flex-col allm-justify-start allm-no-scroll"
+      className="allm-h-full allm-overflow-y-auto allm-px-6 allm-flex allm-flex-col allm-justify-start allm-no-scroll"
       id="chat-history"
       ref={chatHistoryRef}
+      style={{
+        ...getBackgroundStyle(),
+        paddingTop: "5rem"
+      }}
     >
-      <div className="allm-flex allm-flex-col allm-gap-y-3 allm-pb-10 allm-pt-4">
+      <div className="allm-flex allm-flex-col allm-gap-y-3 allm-pb-32 allm-pt-4">
         {history.map((props, index) => {
           const isLastMessage = index === history.length - 1;
           const isLastBotReply =
@@ -144,15 +157,18 @@ function SuggestedMessages({ settings }) {
   const messages = settings?.defaultMessages?.length ? settings.defaultMessages : defaultMessages;
 
   return (
-    <div className="allm-flex allm-flex-col allm-gap-y-3 allm-w-full">
+    <div className="allm-flex allm-flex-col allm-gap-y-3.5 allm-w-full allm-mb-16">
       {messages.map((content, i) => {
         const buttonId = `suggestion-${content.replace(/\s+/g, '-').toLowerCase()}`;
         return (
           <button
             key={buttonId}
             style={{
-              backgroundColor: "#E27B3F",
-              boxShadow: "0 4px 12px rgba(226, 123, 63, 0.25), 0 1px 3px rgba(226, 123, 63, 0.15)"
+              background: "linear-gradient(to bottom, #E9935B 0%, #E27B3F 100%)",
+              boxShadow: "0 6px 16px rgba(226, 123, 63, 0.25), 0 2px 5px rgba(226, 123, 63, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2)",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'",
+              transition: "all 0.2s ease-in-out",
+              transform: "translateZ(0)"
             }}
             type="button"
             onClick={() => {
@@ -167,7 +183,7 @@ function SuggestedMessages({ settings }) {
                 );
               }
             }}
-            className="allm-text-white allm-py-3 allm-px-5 allm-rounded-xl allm-text-left hover:allm-opacity-95 hover:allm-translate-y-[-1px] allm-transition-all allm-border-none allm-cursor-pointer allm-font-medium allm-text-sm"
+            className="allm-text-white allm-py-3.5 allm-px-5 allm-rounded-xl allm-text-left hover:allm-opacity-95 hover:allm-translate-y-[-2px] hover:allm-shadow-lg allm-transition-all allm-duration-200 allm-border-none allm-cursor-pointer allm-font-medium allm-text-sm"
           >
             {content}
           </button>
@@ -175,6 +191,13 @@ function SuggestedMessages({ settings }) {
       })}
     </div>
   );
+}
+
+function getBackgroundStyle() {
+  return {
+    background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 1) 100%)",
+    backdropFilter: "blur(10px)"
+  };
 }
 
 export function ChatHistoryLoading() {

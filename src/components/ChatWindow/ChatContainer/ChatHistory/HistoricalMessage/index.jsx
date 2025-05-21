@@ -17,7 +17,16 @@ const SafeContent = ({ content }) => {
     }
   }, [content]);
   
-  return <div ref={contentRef} className="allm-whitespace-pre-line allm-leading-relaxed" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'" }} />;
+  return (
+    <div 
+      ref={contentRef} 
+      className="allm-whitespace-pre-line allm-leading-relaxed" 
+      style={{ 
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'",
+        color: "inherit"
+      }} 
+    />
+  );
 };
 
 const HistoricalMessage = forwardRef(
@@ -40,7 +49,7 @@ const HistoricalMessage = forwardRef(
     const isUser = role === "user";
     
     return (
-      <div className="allm-py-2">
+      <div className="allm-py-2.5">
         <div
           key={uuid}
           ref={ref}
@@ -54,16 +63,20 @@ const HistoricalMessage = forwardRef(
                 ? "#E27B3F" 
                 : "#FBE7C6",
               boxShadow: isUser
-                ? "0 4px 12px rgba(226, 123, 63, 0.3), 0 1px 3px rgba(226, 123, 63, 0.1)"
-                : "0 4px 12px rgba(251, 231, 198, 0.5), 0 1px 3px rgba(251, 231, 198, 0.2)",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'"
+                ? "0 6px 16px rgba(226, 123, 63, 0.25), 0 2px 5px rgba(226, 123, 63, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2)"
+                : "0 6px 16px rgba(251, 231, 198, 0.25), 0 2px 5px rgba(251, 231, 198, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji'",
+              color: isUser ? "#ffffff" : "#33302E",
+              transform: "translateZ(0)",
+              backdropFilter: "blur(8px)",
+              transition: "all 0.2s ease-in-out"
             }}
             className={`allm-py-3.5 allm-px-5 allm-max-w-[85%] ${
               error
                 ? "allm-bg-red-200 allm-rounded-xl"
                 : isUser
                 ? "allm-rounded-xl allm-text-white"
-                : "allm-rounded-xl allm-text-gray-800"
+                : "allm-rounded-xl"
             }`}
           >
             <div className="allm-flex allm-flex-col">
